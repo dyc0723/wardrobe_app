@@ -1,17 +1,8 @@
 class AppConfig {
-  static const String supabaseUrl = String.fromEnvironment(
-    'SUPABASE_URL',
-    defaultValue: 'https://your-project.supabase.co',
-  );
-  static const String supabaseAnonKey = String.fromEnvironment(
-    'SUPABASE_ANON_KEY',
-    defaultValue: 'your-anon-key',
-  );
-  static const String weatherApiKey = String.fromEnvironment(
-    'WEATHER_API_KEY',
-    defaultValue: 'your-openweather-api-key',
-  );
-  static const String appName = '智能衣橱';
+  static const String supabaseUrl = 'https://fkpougvlpcducecqsjqw.supabase.co';
+  static const String supabaseAnonKey = 'sb_publishable_dBqX_DRWaKDVsOj9J6Frnw_2A2YV6He';
+  static const String weatherApiKey = '';
+  static const String appName = '衣定';
   static const String version = '1.0.0';
   static const String bucketClothing = 'clothing';
   static const String bucketAvatars = 'avatars';

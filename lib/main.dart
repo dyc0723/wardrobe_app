@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/app_config.dart';
 import 'providers/auth_provider.dart';
@@ -9,10 +8,9 @@ import 'screens/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: '.env');
   await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL'] ?? '',
-    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
+    url: AppConfig.supabaseUrl,
+    anonKey: AppConfig.supabaseAnonKey,
   );
   runApp(const ProviderScope(child: WardrobeApp()));
 }
@@ -64,7 +62,7 @@ class _Splash extends StatelessWidget {
         children: [
           Icon(Icons.checkroom, size: 64, color: Color(0xFF6C63FF)),
           SizedBox(height: 16),
-          Text('智能衣橱', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          Text('衣定', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           SizedBox(height: 24),
           CircularProgressIndicator(),
         ],

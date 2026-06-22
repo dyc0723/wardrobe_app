@@ -1,5 +1,5 @@
 name: wardrobe_app
-description: 智能衣橱 - 你的个人穿搭助手
+description: 衣定 - 你的个人穿搭助手
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -20,7 +20,6 @@ dependencies:
   dio: ^5.4.0
   intl: ^0.19.0
   uuid: ^4.3.3
-  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
