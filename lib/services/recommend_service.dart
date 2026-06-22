@@ -1,4 +1,4 @@
-import 'dart:math';
+﻿import 'dart:math';
 import '../models/enums.dart';
 import '../models/clothing.dart';
 
@@ -22,7 +22,9 @@ class RecommendService {
       final outfit = _buildOutfit(candidates, usedIds, recentItemIds);
       if (outfit != null && outfit.length >= 2) {
         outfits.add(outfit);
-        for (final item in outfit) usedIds.add(item.id);
+      for (final item in outfit) {
+      usedIds.add(item.id);
+    }
       }
     }
     return outfits;
@@ -37,7 +39,9 @@ class RecommendService {
       if (temp < 10 && item.thickness.value <= 2) return false;
       if (temp > 28 && item.thickness.value >= 4) return false;
       if (!item.suitableOccasions.contains(occasion) &&
-          !item.suitableOccasions.contains(Occasion.casual)) return false;
+          !item.suitableOccasions.contains(Occasion.casual)) {
+      return false;
+    }
       return true;
     }).toList();
   }

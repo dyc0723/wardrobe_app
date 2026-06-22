@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user.dart';
 import '../models/clothing.dart';
 import '../models/outfit.dart';
@@ -77,7 +77,7 @@ class OutfitsNotifier extends StateNotifier<List<Outfit>> {
 }
 
 // ============ 今日推荐 ============
-final todaysRecommendationProvider = FutureProvider.auto((ref) async {
+final todaysRecommendationProvider = FutureProvider.autoDispose((ref) async {
   final items = ref.watch(wardrobeProvider);
   if (items.isEmpty) return <List<ClothingItem>>[];
 

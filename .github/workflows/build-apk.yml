@@ -14,22 +14,25 @@ jobs:
         with:
           flutter-version: '3.27.4'
 
-      - name: Regenerate Android config
+      # Step 1: Create fresh android config from template
+      - name: Create fresh android config
         run: |
           cd /tmp
-          flutter create --project-name wardrobe_app --platforms android clean_app
+          flutter create --project-name wardrobe_app --platforms android fresh_app
           cd -
-          cp -r /tmp/clean_app/android ./android
-          cp /tmp/clean_app/.metadata ./.metadata
+          rm -rf android ios web linux macos windows test
+          cp -r /tmp/fresh_app/android ./android
+          cp /tmp/fresh_app/.metadata ./.metadata
+          cp /tmp/fresh_app/analysis_options.yaml ./
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
-
-      - name: Set app name
-        run: |
           sed -i 's/android:label="wardrobe_app"/android:label="衣定"/' android/app/src/main/AndroidManifest.xml
 
+      # Step 2: Build
       - name: Build APK
-        run: flutter build apk --release --target-platform android-arm64
+        id: build
+        run: flutter build apk --release 2>&1
 
+      # Step 3: Upload if OK
       - uses: actions/upload-artifact@v4
         with:
           name: app-release-apk

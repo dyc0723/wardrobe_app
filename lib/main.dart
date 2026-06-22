@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/app_config.dart';
@@ -10,7 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
     url: AppConfig.supabaseUrl,
-    anonKey: AppConfig.supabaseAnonKey,
+    publishableKey: AppConfig.supabaseAnonKey,
   );
   runApp(const ProviderScope(child: WardrobeApp()));
 }
@@ -25,11 +25,11 @@ class WardrobeApp extends ConsumerWidget {
       title: AppConfig.appName,
       debugShowCheckedModeBanner: false,
       theme: _buildTheme(),
-      home: authStatus.when(
-        data: (s) => s == AuthStatus.authenticated ? const HomeScreen() : const LoginScreen(),
-        loading: () => const _Splash(),
-        error: (_, __) => const LoginScreen(),
-      ),
+      home: switch (authStatus) {
+        AuthStatus.authenticated => const HomeScreen(),
+        AuthStatus.unauthenticated => const LoginScreen(),
+        AuthStatus.unknown => const _Splash(),
+      },
     );
   }
 
@@ -70,3 +70,4 @@ class _Splash extends StatelessWidget {
     ),
   );
 }
+

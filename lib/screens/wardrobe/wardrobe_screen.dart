@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/enums.dart';
 import '../../models/clothing.dart';
@@ -92,8 +92,8 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
       case Category.top: return Icons.checkroom;
       case Category.bottom: return Icons.accessibility_new;
       case Category.dress: return Icons.woman;
-      case Category.jacket: return Icons.coat;
-      case Category.shoes: return Icons.footprint;
+      case Category.jacket: return Icons.style;
+      case Category.shoes: return Icons.directions_walk;
       case Category.bag: return Icons.shopping_bag;
       case Category.accessory: return Icons.watch;
     }

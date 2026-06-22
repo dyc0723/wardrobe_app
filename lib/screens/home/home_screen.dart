@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../models/clothing.dart';
-import '../../models/enums.dart';
 import '../../providers/app_providers.dart';
 import '../wardrobe/wardrobe_screen.dart';
 import '../outfit/outfit_screen.dart';
@@ -15,6 +15,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _tab = 0;
+  bool _initialized = false;
+
   static const _pages = [
     _TodayPage(),
     WardrobeScreen(),
@@ -22,20 +24,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ProfileScreen(),
   ];
 
+  void _loadInitialData() {
+    if (_initialized) return;
+    _initialized = true;
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user != null) {
+      ref.read(wardrobeProvider.notifier).loadItems(user.id);
+      ref.read(currentUserProvider.notifier).loadProfile(user.id);
+      ref.read(outfitsProvider.notifier).loadOutfits(user.id);
+    }
+  }
+
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: IndexedStack(index: _tab, children: _pages),
-    bottomNavigationBar: BottomNavigationBar(
-      currentIndex: _tab,
-      onTap: (i) => setState(() => _tab = i),
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.today_outlined), activeIcon: Icon(Icons.today), label: '今日推荐'),
-        BottomNavigationBarItem(icon: Icon(Icons.checkroom_outlined), activeIcon: Icon(Icons.checkroom), label: '衣橱'),
-        BottomNavigationBarItem(icon: Icon(Icons.auto_awesome_outlined), activeIcon: Icon(Icons.auto_awesome), label: '穿搭'),
-        BottomNavigationBarItem(icon: Icon(Icons.person_outlined), activeIcon: Icon(Icons.person), label: '我的'),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadInitialData());
+    return Scaffold(
+      body: IndexedStack(index: _tab, children: _pages),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tab,
+        onTap: (i) => setState(() => _tab = i),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.today_outlined), activeIcon: Icon(Icons.today), label: '今日推荐'),
+          BottomNavigationBarItem(icon: Icon(Icons.checkroom_outlined), activeIcon: Icon(Icons.checkroom), label: '衣橱'),
+          BottomNavigationBarItem(icon: Icon(Icons.auto_awesome_outlined), activeIcon: Icon(Icons.auto_awesome), label: '穿搭'),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outlined), activeIcon: Icon(Icons.person), label: '我的'),
+        ],
+      ),
+    );
+  }
 }
 
 class _TodayPage extends ConsumerWidget {
@@ -108,7 +124,7 @@ class _OutfitCard extends StatelessWidget {
                   color: theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Text('推荐 #${index + 1}', style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.w600, fontSize: 12)),
+                child: Text('推荐 #', style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.w600, fontSize: 12)),
               ),
               const Spacer(),
               IconButton(icon: const Icon(Icons.favorite_border, size: 20), onPressed: () {}),
@@ -143,7 +159,7 @@ class _ItemTile extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     width: 80,
     decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.surfaceVariant,
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
       borderRadius: BorderRadius.circular(12),
     ),
     child: Column(
@@ -167,7 +183,10 @@ class _ItemTile extends StatelessWidget {
   Color _parseColor(String hex) {
     if (hex == 'multi' || hex == 'stripe' || hex == 'plaid') return Colors.grey[200]!;
     hex = hex.replaceAll('#', '');
-    if (hex.length == 6) return Color(int.parse('FF$hex', radix: 16));
+    if (hex.length == 6) return Color(int.parse('FF', radix: 16));
     return Colors.grey[200]!;
   }
 }
+
+
+

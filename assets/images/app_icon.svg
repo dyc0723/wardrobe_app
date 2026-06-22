@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6C63FF"/>
+      <stop offset="100%" stop-color="#4A42D4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 圆角方形背景 -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- 衣架主体（简约线条） -->
+  <g transform="translate(256, 240)" stroke="white" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- 衣架钩子 -->
+    <path d="M 0,-100 C 0,-130 40,-130 40,-100 L 40,-60" />
+
+    <!-- 衣架肩膀 -->
+    <path d="M -140,0 C -140,-40 -80,-60 0,-60 C 80,-60 140,-40 140,0" />
+
+    <!-- 衣架横梁 -->
+    <line x1="-90" y1="0" x2="90" y2="0" />
+
+  </g>
+
+  <!-- 对勾 ✓ 表示"定"（确定/搞定） -->
+  <circle cx="370" cy="370" r="56" fill="#FFD700"/>
+  <path d="M 346,370 L 362,390 L 394,352" stroke="#4A42D4" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>
