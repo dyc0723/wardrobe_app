@@ -13,14 +13,23 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.27.4'
-      - name: Create local.properties
+
+      - name: Regenerate Android config
         run: |
+          cd /tmp
+          flutter create --project-name wardrobe_app --platforms android clean_app
+          cd -
+          cp -r /tmp/clean_app/android ./android
+          cp /tmp/clean_app/.metadata ./.metadata
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
-          echo "flutter.buildMode=release" >> android/local.properties
-          echo "flutter.versionName=1.0.0" >> android/local.properties
-          echo "flutter.versionCode=1" >> android/local.properties
+
+      - name: Set app name
+        run: |
+          sed -i 's/android:label="wardrobe_app"/android:label="衣定"/' android/app/src/main/AndroidManifest.xml
+
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --target-platform android-arm64
+
       - uses: actions/upload-artifact@v4
         with:
           name: app-release-apk

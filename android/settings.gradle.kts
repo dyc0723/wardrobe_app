@@ -5,9 +5,8 @@ pluginManagement {
         if (localProps.exists()) {
             localProps.inputStream().use { properties.load(it) }
         }
-        // Fallback to environment variable used by GitHub Actions
         System.getenv("FLUTTER_ROOT") ?: properties.getProperty("flutter.sdk")
-            ?: throw GradleException("flutter.sdk not set in local.properties and FLUTTER_ROOT not set")
+            ?: throw GradleException("flutter.sdk not found")
     }
 
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
